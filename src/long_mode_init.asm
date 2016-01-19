@@ -3,7 +3,12 @@ global long_mode_start
 section .text
 bits 64
 long_mode_start:
-	; Print `OKAY` to screen
-	mov rax, 0x2f592f412f4b2f4f
-	mov qword [0xb8000], rax
+	; Print to screen
+	mov word [0xb8000], 0x0266 ; f
+	mov word [0xb8002], 0x026c ; l
+	mov word [0xb8004], 0x0269 ; i
+	mov word [0xb8006], 0x026e ; n
+	mov word [0xb8008], 0x0274 ; t
+	mov word [0xb800a], 0x024f ; O
+	mov word [0xb800c], 0x0253 ; S
 	hlt
