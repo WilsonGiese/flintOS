@@ -1,11 +1,12 @@
-name := flintOS
+name := flintos
 arch ?= x86_64
 target ?= $(arch)-unknown-linux-gnu
 kernel := build/kernel-$(arch).bin
 iso := build/$(name)-$(arch).iso
 
-rust-os := target/$(target)/debug/libblog_os.a
-linker_scr := src/arch/$(arch)/grub.cfg
+rust_os := target/$(target)/debug/lib$(name).a
+linker_scr := src/arch/$(arch)/linker.ld
+grub_cfg := src/arch/$(arch)/grub.cfg
 assembly_source_files := $(wildcard src/arch/$(arch)/*.asm)
 assembly_object_files := $(patsubst src/arch/$(arch)/%.asm, \
 	build/arch/$(arch)/%.o, $(assembly_source_files))
@@ -30,8 +31,8 @@ run: $(iso)
 $(iso): $(kernel) $(grub_cfg)
 	@mkdir -p build/isofiles/boot/grub
 	@cp $(kernel) build/isofiles/boot/kernel.bin
-	@cp $(grub_cfg) build/isofiles/booy/grub
-	@grub-mkrescue -o $(iso) build/isofiles
+	@cp $(grub_cfg) build/isofiles/boot/grub
+	@grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
 	@rm -r build/isofiles
 
 # compile assembly files
